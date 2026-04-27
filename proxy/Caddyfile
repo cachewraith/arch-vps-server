@@ -1,0 +1,3 @@
+:80 {
+    respond "Arch VPS Server Lab is running"
+}

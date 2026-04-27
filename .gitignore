@@ -1,0 +1,29 @@
+# Secrets and Environment
+.env
+*.env
+.ssh/
+*.pem
+*.key
+
+# Lab Runtime Data
+logs/
+backups/
+data/
+databases/postgres/
+databases/redis/
+*.log
+
+# Project specific ignores (since users will clone their own apps here)
+projects/*
+!projects/.gitkeep
+
+# Build artifacts and caches
+lab-cli/lab
+node_modules/
+dist/
+build/
+.cache/
+.DS_Store
+
+# OS related
+Thumbs.db
