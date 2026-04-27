@@ -106,14 +106,27 @@ avps-ssh() {
             fi
             local key="$2"
             local ssh_dir="$ARCH_VPS_ROOT/.ssh"
+            local authorized_keys="$ssh_dir/authorized_keys"
 
-            mkdir -p "$ssh_dir"
-            chmod 700 "$ssh_dir"
-            echo "$key" >> "$ssh_dir/authorized_keys"
-            chmod 600 "$ssh_dir/authorized_keys"
-
-            sudo chown -R vps-guest:somonor "$ssh_dir"
+            sudo install -d -m 700 -o vps-guest -g somonor "$ssh_dir" || return 1
+            printf '%s\n' "$key" | sudo tee -a "$authorized_keys" >/dev/null || return 1
+            sudo chown vps-guest:somonor "$authorized_keys" || return 1
+            sudo chmod 600 "$authorized_keys" || return 1
             echo "SSH key added for vps-guest."
+            if command -v curl >/dev/null 2>&1; then
+                local public_ip
+                public_ip="$(curl -4 --silent --show-error ifconfig.me || true)"
+                if [ -n "$public_ip" ]; then
+                    echo
+                    echo "Give your friend this exact command:"
+                    echo "ssh vps-guest@$public_ip"
+                    echo
+                    echo "They can run it from Command Prompt, PowerShell, Git Bash, or Linux/macOS Terminal."
+                    echo
+                    echo "On Windows they can test the route with:"
+                    echo "Test-NetConnection $public_ip -Port 22"
+                fi
+            fi
             ;;
         *)
             echo "Usage: avps-ssh add 'KEY'"
