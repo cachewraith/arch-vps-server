@@ -1,14 +1,17 @@
 # Arch VPS Server Lab
 
-This project turns this folder into a clean Docker-based VPS-style server environment for an Arch laptop.
+🚀 **Arch VPS Lab**: Turn your Arch Linux machine into a clean, Docker-based VPS-style hosting environment. Managed by a custom Go CLI for automated proxying, project scaffolding, and easy deployment.
 
-## 🚀 Lab CLI (New!)
+**Arch VPS Server Lab** is a modular framework designed to transform a standard Arch Linux installation into a professional, VPS-style server environment. It simplifies the complexity of hosting multiple web applications on a single machine.
 
-We now have a unified CLI tool called `lab` to manage everything. **This is the recommended way to use the lab.**
+## 🚀 Lab CLI (Recommended)
+
+The `lab` CLI is a unified manager to scaffold new projects, update repositories, and control the Caddy proxy.
 
 ### Setup
-Add the following alias to your `~/.bashrc`:
+Build the binary and add the alias to your shell:
 ```bash
+cd lab-cli && go build -o lab main.go
 alias lab='/mnt/storage/arch-vps-server/lab-cli/lab'
 ```
 
