@@ -31,10 +31,45 @@ To allow a friend to connect:
     ```bash
     avps-ssh add 'ssh-rsa AAA...'
     ```
-3.  Your friend can then connect using:
+3.  Check the exact public IP and SSH command:
     ```bash
-    ssh vps-guest@your_ip_address
+    avps-ip
     ```
+4.  Your friend can then connect using the exact IP printed by `avps-ip`:
+    ```bash
+    ssh vps-guest@your_public_ip_address
+    ```
+
+The same SSH command works from these client shells:
+
+- Windows Command Prompt
+- Windows PowerShell
+- Git Bash
+- Linux/macOS Terminal
+
+If your friend uses Git Bash, Command Prompt, or PowerShell, the command is
+still the same:
+
+```bash
+ssh vps-guest@your_public_ip_address
+```
+
+If the connection times out, the problem is network reachability, not the SSH
+key. Confirm that:
+
+- Your friend typed the public IP exactly.
+- Your router forwards TCP port `22` to this laptop's LAN IP address.
+- Your router WAN / Internet IP matches the public IP shown by `avps-ip`.
+- Any local firewall allows TCP port `22`.
+
+On Windows, your friend can test the route with:
+
+```powershell
+Test-NetConnection your_public_ip_address -Port 22
+```
+
+If this returns `TcpTestSucceeded: False`, fix router forwarding, firewall, or
+CGNAT before debugging SSH keys.
 
 ## General Notes
 
