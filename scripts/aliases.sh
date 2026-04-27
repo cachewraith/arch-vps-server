@@ -97,6 +97,30 @@ $domain {
    curl -I https://$domain
 EOF
 }
+avps-ssh() {
+    case "$1" in
+        add)
+            if [ "${2:-}" = "" ]; then
+                echo "Usage: avps-ssh add 'ssh-rsa AAA...'"
+                return 1
+            fi
+            local key="$2"
+            local ssh_dir="$ARCH_VPS_ROOT/.ssh"
+
+            mkdir -p "$ssh_dir"
+            chmod 700 "$ssh_dir"
+            echo "$key" >> "$ssh_dir/authorized_keys"
+            chmod 600 "$ssh_dir/authorized_keys"
+
+            sudo chown -R vps-guest:somonor "$ssh_dir"
+            echo "SSH key added for vps-guest."
+            ;;
+        *)
+            echo "Usage: avps-ssh add 'KEY'"
+            return 1
+            ;;
+    esac
+}
 
 avps-help() {
     cat <<'EOF'
@@ -106,7 +130,11 @@ Arch VPS aliases
 Navigation:
   avps                 cd to /mnt/storage/arch-vps-server
 
+SSH Management:
+  avps-ssh add 'KEY'   add a friend's public SSH key
+
 Proxy:
+...
   avps-net             create Docker network arch-vps-net
   avps-up              start Caddy proxy
   avps-down            stop Caddy proxy
